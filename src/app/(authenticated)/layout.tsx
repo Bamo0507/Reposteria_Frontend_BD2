@@ -25,7 +25,7 @@ export default function AuthenticatedLayout({ children }: AuthenticatedLayoutPro
                 "
             >
                 <Toolbar />
-                <main className="flex-1 grid place-items-center min-h-0 mx-2 md:mx-4 lg:mx-8 my-4">
+                <main className="flex-grow w-full md:w-[90%] mx-auto px-2 sm:px-4 pt-2 sm:pt-4 md:pt-8 mb-8">
                   {children}
                 </main>
             </SidebarInset>
