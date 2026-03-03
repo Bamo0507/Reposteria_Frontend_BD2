@@ -62,7 +62,7 @@ export function LoginForm() {
             <CardContent className="px-8 py-4">
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="space-y-2">
-                  <Label htmlFor="user" className="font-semibold">Usuario</Label>
+                  <Label htmlFor="user" className="font-semibold text-sm">Usuario</Label>
                   <Input
                     id="user"
                     type="text"
@@ -77,7 +77,7 @@ export function LoginForm() {
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="password" className="font-semibold">Contraseña</Label>
+                  <Label htmlFor="password" className="font-semibold text-sm">Contraseña</Label>
                   <div className="relative">
                     <Input
                       id="password"
@@ -91,13 +91,13 @@ export function LoginForm() {
                       type="button"
                       variant="ghost"
                       size="sm"
-                      className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
+                      className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent group"
                       onClick={() => setShowPassword(!showPassword)}
                     >
                       {showPassword ? (
-                        <IconEyeOff className="h-4 w-4" />
+                        <IconEyeOff className="h-4 w-4 group-hover:scale-110 transition-transform duration-300 ease-out" />
                       ) : (
-                        <IconEye className="h-4 w-4" />
+                        <IconEye className="h-4 w-4 group-hover:scale-110 transition-transform duration-300 ease-out" />
                       )}
                     </Button>
                   </div>
@@ -109,10 +109,10 @@ export function LoginForm() {
                 <div className="pt-2">
                   <Button
                     type="submit"
-                    className="w-full font-bold shadow-lg hover:shadow-xl transition-shadow duration-200 rounded-l-lg"
+                    className="w-full font-bold shadow-lg hover:shadow-xl transition-shadow duration-200 rounded-l-lg p-4"
                     disabled={mutation.isPending}
                   >
-                    <p className="py-4 text-white">
+                    <p className="py-8 text-white">
                       {mutation.isPending ? "Iniciando sesión..." : "Iniciar Sesión"}
                     </p>
                   </Button>

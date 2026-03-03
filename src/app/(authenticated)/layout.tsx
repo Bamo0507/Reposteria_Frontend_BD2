@@ -25,7 +25,9 @@ export default function AuthenticatedLayout({ children }: AuthenticatedLayoutPro
                 "
             >
                 <Toolbar />
-                <main className="p-4 bg-muted w-full">{children}</main>
+                <main className="flex-1 grid place-items-center min-h-0 mx-2 md:mx-4 lg:mx-8 my-4">
+                  {children}
+                </main>
             </SidebarInset>
             </div>
         </SidebarProvider>

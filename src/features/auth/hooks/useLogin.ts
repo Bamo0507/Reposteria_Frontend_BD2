@@ -12,7 +12,7 @@ export function useLogin() {
       localStorage.setItem("_id", data._id);
       localStorage.setItem("nombre_usuario", data.nombre_usuario);
       localStorage.setItem("tipo_usuario", data.tipo_usuario);
-      router.push(data.tipo_usuario === "admin" ? "/admin" : "/client");
+      router.push(data.tipo_usuario === "admin" ? "/admin/dashboard" : "/client/pedidos");
     },
   });
 }
