@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
-import { AdminPedidosPage } from "@/features/admin/pedidos/components/AdminPedidosPage";
+import { AdminPedidosListPage } from "@/features/admin/pedidos/list/components/AdminPedidosListPage";
 
 export const metadata: Metadata = {
   title: "Pedidos — Sweet Lab",
 };
 
 export default function Page() {
-  return <AdminPedidosPage />;
+  return <AdminPedidosListPage />;
 }
