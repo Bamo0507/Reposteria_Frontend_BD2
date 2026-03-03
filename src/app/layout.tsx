@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { PT_Sans, Nunito } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
+import { Providers } from "@/components/providers";
 
 const ptSans = PT_Sans({
   weight: ['400', '700'],
@@ -17,8 +18,8 @@ const nunito = Nunito({
 });
 
 export const metadata: Metadata = {
-  title: "CSPI",
-  description: "CSPI",
+  title: "Portal — Repostería",
+  description: "Gestión de pedidos y reseñas para tu pastelería.",
 };
 
 export default function RootLayout({
@@ -27,24 +28,26 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="es" suppressHydrationWarning>
       <body
         className={`${ptSans.variable} ${nunito.variable} font-sans antialiased`}
       >
-        {children}
-        <Toaster 
-          richColors 
-          theme="light"
-          position="bottom-center"
-          toastOptions={{
-            style: {
-              borderRadius: '8px',
-              fontSize: '14px',
-              fontWeight: 500,
-              boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)'
-            }
-          }}
-        />
+        <Providers>
+          {children}
+          <Toaster
+            richColors
+            theme="light"
+            position="bottom-center"
+            toastOptions={{
+              style: {
+                borderRadius: '8px',
+                fontSize: '14px',
+                fontWeight: 500,
+                boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)'
+              }
+            }}
+          />
+        </Providers>
       </body>
     </html>
   );

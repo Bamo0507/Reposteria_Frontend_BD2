@@ -1,7 +1,7 @@
 "use client"
 
 import Link from "next/link"
-import { User2, LogOut, ScrollText } from "lucide-react"
+import { IconUser, IconLogout, IconFileText } from "@tabler/icons-react"
 import { useLogout } from "@/hooks/use-logout"
 import {
   Sidebar,
@@ -20,13 +20,13 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 type MenuItem = {
   title: string
   url: string
-  icon: React.ComponentType<React.SVGProps<SVGSVGElement>>
+  icon: React.ElementType
 }
 
 const USERNAME = "CSPI Admin"
 
 const menuItems: MenuItem[] = [
-  { title: "Pagaré", url: "/promissory", icon: ScrollText }
+  
 ]
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
@@ -117,7 +117,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                   aria-label="Abrir menú de usuario"
                 >
                   <div className="flex items-center justify-center size-8 rounded-full bg-sidebar-primary text-sidebar-primary-foreground group-data-[collapsible=icon]:mx-auto">
-                    <User2 className="size-4" />
+                    <IconUser className="size-4" />
                   </div>
                   <div className="grid flex-1 text-left text-sm mx-1 leading-tight group-data-[collapsible=icon]:hidden">
                     <span className="truncate font-bold">{USERNAME}</span>
@@ -134,7 +134,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                     logout();
                   }}
                 >
-                  <LogOut className="mr-2 size-4" />
+                  <IconLogout className="mr-2 size-4" />
                   <span>Cerrar sesión</span>
                 </DropdownMenuItem>
               </DropdownMenuContent>
