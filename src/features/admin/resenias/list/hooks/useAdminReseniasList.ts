@@ -1,16 +1,15 @@
 "use client"
 
 import { useState } from "react"
-import { useQuery, useMutation, useQueryClient, keepPreviousData } from "@tanstack/react-query"
+import { useQuery, keepPreviousData } from "@tanstack/react-query"
 import type { DateRange } from "react-day-picker"
-import { getOrders, updateOrderStatus } from "../../admin-pedidos-api"
-import type { PedidoEstado } from "../../shared/types/pedido.type"
+import { getResenias } from "../../admin-resenias-api"
 
-export function useAdminPedidosList() {
-  const queryClient = useQueryClient()
-
+export function useAdminReseniasList() {
   // Filters
+  const [searchQuery, setSearchQuery] = useState("")
   const [dateRange, setDateRange] = useState<DateRange | undefined>(undefined)
+  const [puntuacion, setPuntuacion] = useState<number | undefined>(undefined)
 
   // Pagination
   const [currentPage, setCurrentPage] = useState(1)
@@ -34,26 +33,23 @@ export function useAdminPedidosList() {
     error,
     refetch,
   } = useQuery({
-    queryKey: ["admin", "pedidos", "list", { fechaInicio, fechaFin, currentPage, pageSize }],
-    queryFn: () => getOrders({ page: currentPage, pageSize, fechaInicio, fechaFin }),
+    queryKey: ["admin", "resenias", "list", { searchQuery, fechaInicio, fechaFin, puntuacion, currentPage, pageSize }],
+    queryFn: () =>
+      getResenias({
+        page: currentPage,
+        pageSize,
+        fechaInicio,
+        fechaFin,
+        puntuacion,
+        q: searchQuery || undefined,
+      }),
     staleTime: 2 * 60 * 1000,
     placeholderData: keepPreviousData,
   })
 
-  const pedidos = data?.data ?? []
+  const resenias = data?.data ?? []
   const total = data?.total ?? 0
   const totalPages = Math.max(1, Math.ceil(total / pageSize))
-
-  const {
-    mutate: changeStatus,
-    isPending: isUpdatingStatus,
-  } = useMutation({
-    mutationFn: ({ id, estado }: { id: string; estado: PedidoEstado }) =>
-      updateOrderStatus(id, estado),
-    onSuccess: () => {
-      void queryClient.invalidateQueries({ queryKey: ["admin", "pedidos", "list"] })
-    },
-  })
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page)
@@ -69,22 +65,38 @@ export function useAdminPedidosList() {
     setCurrentPage(1)
   }
 
-  const clearFilters = () => {
-    setDateRange(undefined)
+  const handleSearchChange = (q: string) => {
+    setSearchQuery(q)
     setCurrentPage(1)
   }
 
-  const hasFilters = Boolean(dateRange?.from || dateRange?.to)
+  const handlePuntuacionChange = (value: number | undefined) => {
+    setPuntuacion(value)
+    setCurrentPage(1)
+  }
+
+  const clearFilters = () => {
+    setSearchQuery("")
+    setDateRange(undefined)
+    setPuntuacion(undefined)
+    setCurrentPage(1)
+  }
+
+  const hasFilters = Boolean(searchQuery || dateRange?.from || dateRange?.to || puntuacion)
 
   return {
-    pedidos,
+    resenias,
     isLoading: isLoading || isFetching,
     error,
     refetch,
 
     // Filters
+    searchQuery,
+    setSearchQuery: handleSearchChange,
     dateRange,
     setDateRange: handleDateRangeChange,
+    puntuacion,
+    setPuntuacion: handlePuntuacionChange,
     hasFilters,
     clearFilters,
 
@@ -95,9 +107,5 @@ export function useAdminPedidosList() {
     totalPages,
     onPageChange: handlePageChange,
     onPageSizeChange: handlePageSizeChange,
-
-    // Status mutation
-    changeStatus,
-    isUpdatingStatus,
   }
 }

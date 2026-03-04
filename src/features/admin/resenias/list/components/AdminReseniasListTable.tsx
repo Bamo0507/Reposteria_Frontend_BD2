@@ -1,7 +1,7 @@
 "use client"
 
 import { useRouter } from "next/navigation"
-import { IconEye } from "@tabler/icons-react"
+import { IconEye, IconStar } from "@tabler/icons-react"
 import { Button } from "@/components/ui/button"
 import { Skeleton } from "@/components/ui/skeleton"
 import {
@@ -12,41 +12,46 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
-import { PedidoStatusBadge } from "./PedidoStatusBadge"
 import { PaginationControls } from "@/features/admin/shared/components/PaginationControls"
-import type { useAdminPedidosList } from "../hooks/useAdminPedidosList"
+import type { useAdminReseniasList } from "../hooks/useAdminReseniasList"
 
-interface AdminPedidosListTableProps {
-  listState: ReturnType<typeof useAdminPedidosList>
-}
-
-function formatCurrency(amount: number): string {
-  return amount.toLocaleString("es-GT", { style: "currency", currency: "GTQ" })
+interface AdminReseniasListTableProps {
+  listState: ReturnType<typeof useAdminReseniasList>
 }
 
 function formatDate(dateStr: string): string {
   return new Date(dateStr).toLocaleDateString("es-GT")
 }
 
+function StarRating({ value }: { value: number }) {
+  return (
+    <span className="inline-flex items-center gap-0.5">
+      {Array.from({ length: 5 }).map((_, i) => (
+        <IconStar
+          key={i}
+          className={`h-3.5 w-3.5 ${i < value ? "fill-amber-400 text-amber-400" : "text-muted-foreground/30"}`}
+        />
+      ))}
+    </span>
+  )
+}
+
 const TABLE_HEADERS = (
   <TableRow className="bg-muted/50">
-    <TableHead className="font-semibold">Usuario</TableHead>
-    <TableHead className="font-semibold">Restaurante</TableHead>
-    <TableHead className="font-semibold">Total</TableHead>
-    <TableHead className="font-semibold">Estado</TableHead>
-    <TableHead className="font-semibold">Fecha pedido</TableHead>
+    <TableHead className="w-40 font-semibold">Título</TableHead>
+    <TableHead className="font-semibold">Descripción</TableHead>
+    <TableHead className="w-40 font-semibold">Puntuación</TableHead>
+    <TableHead className="w-32 font-semibold">Fecha</TableHead>
     <TableHead className="w-16 text-center"></TableHead>
   </TableRow>
 )
 
-export function AdminPedidosListTable({ listState }: AdminPedidosListTableProps) {
+export function AdminReseniasListTable({ listState }: AdminReseniasListTableProps) {
   const {
-    pedidos,
+    resenias,
     isLoading,
     error,
     refetch,
-    changeStatus,
-    isUpdatingStatus,
     currentPage,
     pageSize,
     total,
@@ -64,11 +69,10 @@ export function AdminPedidosListTable({ listState }: AdminPedidosListTableProps)
           <Table>
             <TableHeader>
               <TableRow className="bg-muted/50">
-                <TableHead className="min-w-40">Usuario</TableHead>
-                <TableHead className="min-w-48">Restaurante</TableHead>
-                <TableHead className="w-32">Total</TableHead>
-                <TableHead className="w-36">Estado</TableHead>
-                <TableHead className="w-36">Fecha pedido</TableHead>
+                <TableHead className="w-40">Título</TableHead>
+                <TableHead>Descripción</TableHead>
+                <TableHead className="w-40">Puntuación</TableHead>
+                <TableHead className="w-32">Fecha</TableHead>
                 <TableHead className="w-16 text-center">Acciones</TableHead>
               </TableRow>
             </TableHeader>
@@ -76,9 +80,8 @@ export function AdminPedidosListTable({ listState }: AdminPedidosListTableProps)
               {Array.from({ length: pageSize }).map((_, i) => (
                 <TableRow key={i}>
                   <TableCell><Skeleton className="h-4 w-36" /></TableCell>
-                  <TableCell><Skeleton className="h-4 w-44" /></TableCell>
-                  <TableCell><Skeleton className="h-4 w-20" /></TableCell>
-                  <TableCell><Skeleton className="h-6 w-24" /></TableCell>
+                  <TableCell><Skeleton className="h-4 w-56" /></TableCell>
+                  <TableCell><Skeleton className="h-4 w-24" /></TableCell>
                   <TableCell><Skeleton className="h-4 w-28" /></TableCell>
                   <TableCell><Skeleton className="h-8 w-8 mx-auto" /></TableCell>
                 </TableRow>
@@ -94,7 +97,7 @@ export function AdminPedidosListTable({ listState }: AdminPedidosListTableProps)
     return (
       <div className="flex flex-col items-center justify-center gap-4 rounded-lg border border-border py-16 text-center">
         <p className="text-sm font-medium text-destructive">
-          Error al cargar los pedidos
+          Error al cargar las reseñas
         </p>
         <p className="text-xs text-muted-foreground">
           {error instanceof Error ? error.message : "Error desconocido"}
@@ -106,12 +109,12 @@ export function AdminPedidosListTable({ listState }: AdminPedidosListTableProps)
     )
   }
 
-  if (pedidos.length === 0) {
+  if (resenias.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center gap-2 rounded-lg border border-border py-16 text-center">
-        <p className="text-sm font-medium text-foreground">No hay pedidos</p>
+        <p className="text-sm font-medium text-foreground">No hay reseñas</p>
         <p className="text-xs text-muted-foreground">
-          No se encontraron pedidos para el rango de fechas seleccionado.
+          No se encontraron reseñas para los filtros seleccionados.
         </p>
       </div>
     )
@@ -123,39 +126,26 @@ export function AdminPedidosListTable({ listState }: AdminPedidosListTableProps)
         <Table>
           <TableHeader>{TABLE_HEADERS}</TableHeader>
           <TableBody>
-            {pedidos.map((pedido) => (
-              <TableRow key={pedido._id} className="hover:bg-muted/50">
+            {resenias.map((resenia) => (
+              <TableRow key={resenia._id} className="hover:bg-muted/50">
                 <TableCell className="text-muted-foreground">
-                  <div className="truncate max-w-[160px]">{pedido.nombre_usuario}</div>
+                  <div className="truncate max-w-40">{resenia.titulo}</div>
                 </TableCell>
                 <TableCell className="text-muted-foreground">
-                  <div className="truncate max-w-[180px]">{pedido.nombre_restaurante}</div>
+                  <div className="truncate">{resenia.descripcion}</div>
+                </TableCell>
+                <TableCell>
+                  <StarRating value={resenia.puntuacion} />
                 </TableCell>
                 <TableCell className="text-muted-foreground tabular-nums">
-                  {formatCurrency(pedido.total)}
-                </TableCell>
-                <TableCell
-                  onClick={(e) => e.stopPropagation()}
-                  onKeyDown={(e) => e.stopPropagation()}
-                >
-                  <PedidoStatusBadge
-                    pedidoId={pedido._id}
-                    currentEstado={pedido.estado}
-                    onChangeEstado={(estado) =>
-                      changeStatus({ id: pedido._id, estado })
-                    }
-                    isLoading={isUpdatingStatus}
-                  />
-                </TableCell>
-                <TableCell className="text-muted-foreground tabular-nums">
-                  {formatDate(pedido.fecha_pedido)}
+                  {formatDate(resenia.fecha)}
                 </TableCell>
                 <TableCell className="text-center">
                   <Button
                     variant="ghost"
                     size="icon"
                     aria-label="Ver detalle"
-                    onClick={() => router.push(`/admin/pedidos/${pedido._id}`)}
+                    onClick={() => router.push(`/admin/resenias/${resenia._id}`)}
                   >
                     <IconEye className="h-4 w-4" />
                   </Button>
