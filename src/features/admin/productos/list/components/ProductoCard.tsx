@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation"
 import { IconChevronRight } from "@tabler/icons-react"
 import { Button } from "@/components/ui/button"
+import { StatusBadge } from "@/features/admin/shared/components/StatusBadge"
 import type { Producto } from "../../shared/types/producto.type"
 
 interface ProductoCardProps {
@@ -39,15 +40,7 @@ export function ProductoCard({ producto }: ProductoCardProps) {
           <p className="text-sm text-muted-foreground tabular-nums">
             {formatCurrency(producto.precio)}
           </p>
-          <span
-            className={`inline-block text-xs font-medium px-2 py-0.5 rounded-full ${
-              producto.esActivo
-                ? "bg-green-100 text-green-800"
-                : "bg-red-100 text-red-800"
-            }`}
-          >
-            {producto.esActivo ? "Activo" : "Inactivo"}
-          </span>
+          <StatusBadge active={producto.esActivo} />
         </div>
 
         <div className="flex justify-end mt-3">

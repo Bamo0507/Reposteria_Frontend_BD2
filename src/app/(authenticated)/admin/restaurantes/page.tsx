@@ -1,10 +1,10 @@
-import type { Metadata } from "next";
-import { RestaurantesPage } from "@/features/admin/restaurantes/components/RestaurantesPage";
+import type { Metadata } from "next"
+import { AdminRestaurantesListPage } from "@/features/admin/restaurantes/list/components/AdminRestaurantesListPage"
 
 export const metadata: Metadata = {
   title: "Restaurantes — Sweet Lab",
-};
+}
 
 export default function Page() {
-  return <RestaurantesPage />;
+  return <AdminRestaurantesListPage />
 }
