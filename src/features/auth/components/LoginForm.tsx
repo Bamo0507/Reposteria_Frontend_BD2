@@ -43,7 +43,8 @@ export function LoginForm() {
       <div
         className="absolute inset-0 z-0"
         style={{
-          background: "radial-gradient(125% 125% at 50% 10%, #fff 40%, #72d5d4 100%)",
+          background:
+            "linear-gradient(to top, var(--primary) 0%, color-mix(in oklch, var(--primary) 22%, var(--background)) 18%, var(--background) 100%)",
         }}
       />
 
