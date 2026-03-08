@@ -67,7 +67,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       <SidebarHeader>
         {/* Expanded: SWEET LAB */}
         <div className="group-data-[collapsible=icon]:hidden flex w-full items-center justify-center px-2 py-2 overflow-hidden">
-          <span className="text-xl font-extrabold tracking-wide text-foreground whitespace-nowrap">SWEET LAB</span>
+          <span className="text-xl font-extrabold tracking-wide whitespace-nowrap text-primary">SWEET LAB</span>
         </div>
         {/* Collapsed: SL */}
         <div className="hidden group-data-[collapsible=icon]:flex w-full items-center justify-center px-0">
