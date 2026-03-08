@@ -59,3 +59,16 @@ export async function getRestaurantNames(): Promise<RestauranteOption[]> {
 export async function getAvailableProducts(): Promise<ProductoOption[]> {
   return apiClient.get<ProductoOption[]>("/cliente/pedidos/productos")
 }
+
+// PedidoReciente: returned by GET /cliente/pedidos/recientes
+// NOTE: backend must include `id_restaurante: "$restaurante._id"` in the $project
+export interface PedidoReciente {
+  _id: string
+  nombre_restaurante: string
+  fecha_pedido: string
+  id_restaurante: string
+}
+
+export async function getClientRecentOrders(userId: string): Promise<PedidoReciente[]> {
+  return apiClient.get<PedidoReciente[]>(`/cliente/pedidos/recientes?userId=${userId}`)
+}

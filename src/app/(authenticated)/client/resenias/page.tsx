@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { ClientReseniasPage } from "@/features/client/resenias/components/ClientReseniasPage";
+import { ClientReseniasPage } from "@/features/client/resenias/list/components/ClientReseniasPage";
 
 export const metadata: Metadata = {
   title: "Mis Reseñas — Sweet Lab",

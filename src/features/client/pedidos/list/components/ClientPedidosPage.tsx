@@ -1,8 +1,8 @@
 "use client"
 
-import { useClientPedidosList } from "../list/hooks/useClientPedidosList"
-import { ClientPedidosListHeader } from "../list/components/ClientPedidosListHeader"
-import { ClientPedidosListTable } from "../list/components/ClientPedidosListTable"
+import { useClientPedidosList } from "../hooks/useClientPedidosList"
+import { ClientPedidosListHeader } from "./ClientPedidosListHeader"
+import { ClientPedidosListTable } from "./ClientPedidosListTable"
 
 export function ClientPedidosPage() {
   const listState = useClientPedidosList()
